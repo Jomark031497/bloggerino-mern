@@ -1,0 +1,32 @@
+{
+  "name": "bloggerino-mern",
+  "version": "1.0.0",
+  "description": "A Blogging App created using MERN Stack",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm i --prefix view",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "view": "npm start --prefix view",
+    "dev": "concurrently \"npm run server\" \"npm run view\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix view && npm run build --prefix view",
+    "build": "cd view && npm run build"
+  },
+  "author": "Jomark Pangan",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.27",
+    "morgan": "^1.10.0"
+  }
+}
