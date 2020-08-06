@@ -9,6 +9,6 @@ const router = express.Router();
 // AUTH: TRUE
 router.post('/create', verify, createBlog);
 
-router.get('/', verify, showBlogs);
+router.get('/', showBlogs);
 
 module.exports = router;

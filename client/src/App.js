@@ -7,6 +7,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Axios from "axios";
 import UserContext from './contexts/userContext';
+import { CircularProgress } from '@material-ui/core';
 
 
 const App = () => {
@@ -15,48 +16,59 @@ const App = () => {
     token: undefined,
     user: undefined,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+
     const checkLoggedIn = async () => {
-      let token = localStorage.getItem("auth-token");
-      if (token === null) {
-        localStorage.setItem("auth-token", "");
-        token = "";
+      setIsLoading(true);
+      try {
+        let token = localStorage.getItem("auth-token");
+        if (token === null) {
+          localStorage.setItem("auth-token", "");
+          token = "";
+        }
+        const tokenRes = await Axios.post(
+          "/api/users/isTokenValid", null, { headers: { "x-auth-token": token } }
+        );
+        if (tokenRes.data) {
+          const userRes = await Axios.get("/api/users/", {
+            headers: { "x-auth-token": token },
+          });
+          setUserData({
+            token,
+            user: userRes.data,
+          });
+        }
+        
       }
-      const tokenRes = await Axios.post("api/users/isTokenValid", null, { headers: { "x-auth-token": token } }
-      );
-
-      if (tokenRes.data) {
-        const userRes = await Axios.get("api/users/", {
-          headers: { "x-auth-token": token },
-        });
-        setUserData({
-          token,
-          user: userRes.data,
-        });
-
+      catch (err) {
+        console.log(err);
       }
+      finally{
+        setIsLoading(false)
+      }
+
     };
 
-    try {
-      checkLoggedIn();
-    } catch (err) {
-      console.log(`errorTo: ${err}`)
-    }
+    checkLoggedIn();
 
   }, []);
-
 
   return (
     <Router>
       <CssBaseLine />
       <UserContext.Provider value={{ userData, setUserData }} >
         <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
+        {isLoading ? <CircularProgress />
+          :
+
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        }
       </UserContext.Provider>
     </Router>
   )

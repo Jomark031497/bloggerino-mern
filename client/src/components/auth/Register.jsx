@@ -35,8 +35,23 @@ const Register = () => {
     passwordCheck: "",
   });
 
+  const clearFields = () => {
+    setUser({
+      username: "",
+      email: "",
+      password: "",
+      passwordCheck: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+
+    if (user.password !== user.passwordCheck) {
+      setError("Password doesn't match");
+      clearFields();
+      return;
+    }
 
     try {
       const newUser = {
@@ -55,16 +70,11 @@ const Register = () => {
         user: loginResponse.data.user,
       });
       localStorage.setItem("auth-token", loginResponse.data.token);
-      setUser({
-        username: "",
-        email: "",
-        password: "",
-        passwordCheck: "",
-      });
+
       history.push("/");
     } catch (err) {
       err.response.data.msg && setError(err.response.data.msg);
-      setUser({ username: "", password: "", passwordCheck: "", email: "" });
+      clearFields();
     }
   };
 

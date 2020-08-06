@@ -23,7 +23,7 @@ const AuthOptions = () => {
       user: undefined,
     });
 
-    localStorage.setItem("auth-token", "");
+    localStorage.setItem("auth-token", undefined);
     history.push("/");
   };
 

@@ -27,7 +27,7 @@ const showBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find();
 
-    res.json(blogs);
+    res.send(blogs);
   } catch (err) {
     res.status(400).json({ msg: err });
   }

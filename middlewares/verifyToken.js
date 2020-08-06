@@ -1,18 +1,23 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
   try {
-    const token = req.header('x-auth-token');
-    if (!token) return res.status(401).json({ msg: 'No authentication token, authorization denied.' });
+    const token = req.header("x-auth-token");
+    if (!token)
+      return res
+        .status(401)
+        .json({ msg: "No authentication token, authorization denied." });
 
     const verified = jwt.verify(token, process.env.jwt_token);
-    if (!verified) return res.status(401).json({ msg: 'Token verification failed, authorization denied.' });
+    if (!verified)
+      return res
+        .status(401)
+        .json({ msg: "Token verification failed, authorization denied." });
 
     req.user = verified.id;
-
     next();
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
