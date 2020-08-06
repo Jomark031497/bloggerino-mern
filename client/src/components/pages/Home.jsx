@@ -1,0 +1,38 @@
+import React, { useEffect, useContext } from "react";
+import { Box, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { useHistory } from "react-router-dom";
+import userContext from "../../contexts/userContext";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    textAlign: "center",
+  },
+}));
+
+const Home = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const { userData } = useContext(userContext);
+
+  useEffect(() => {
+    const getBlogs = async () => {
+      if (!userData.user) history.push("/login");
+    };
+
+    getBlogs();
+    // eslint-disable-next-line
+  }, [userData]);
+
+  return (
+    <Box component="div" className={classes.root}>
+      <Typography variant="h3">Bloggerino</Typography>
+    </Box>
+  );
+};
+
+export default Home;
