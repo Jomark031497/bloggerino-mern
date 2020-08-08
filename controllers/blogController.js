@@ -9,7 +9,6 @@ const createBlog = async (req, res) => {
     // Validate data
     const { error } = createBlogValidation(req.body);
     if (error) return res.status(400).json({ msg: error.details[0].message });
-    console.log(req.body)
     const newBlog = new Blog({
       postedBy,
       title,
@@ -25,7 +24,7 @@ const createBlog = async (req, res) => {
 
 const showBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().sort([['date', 1]]);
 
     res.send(blogs);
   } catch (err) {

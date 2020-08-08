@@ -1,16 +1,32 @@
 import React from "react";
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Grid, Box, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import BlogCard from "./BlogCard";
+import {useHistory} from "react-router-dom";
 
-const Blogs = ({ blog }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "1rem",
+  },
+}));
+const Blogs = ({ blogs }) => {
+  console.log(blogs);
+  const classes = useStyles();
+  const history = useHistory();
+
   return (
     <>
-      <Card>
-        <CardContent>
-          <Typography>{blog.postedBy}</Typography>
-          <Typography>{blog.title}</Typography>
-          <Typography>{blog.body}</Typography>
-        </CardContent>
-      </Card>
+      <Box component="div" className={classes.root}>
+        <Grid container spacing={3}>
+          {blogs.map((blog) => (
+            <Grid item xs={12} key={blog._id}>
+              <BlogCard blog={blog} />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Button onClick={() => history.push("/blogs/create")}>Add Blog</Button>
+      </Box>
     </>
   );
 };

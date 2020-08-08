@@ -45,11 +45,7 @@ const Home = () => {
   return (
     <>
       {userData.user ? (
-        <div>
-          <h3>Hello, you can only see this if youre logged in</h3>
-
-          {blogs && blogs.map((blog) => <Blogs blog={blog} key={blog._id} />)}
-        </div>
+        <div>{blogs && <Blogs blogs={blogs} />}</div>
       ) : (
         <Box component="div" className={classes.root}>
           <Typography variant="h3">Bloggerino</Typography>

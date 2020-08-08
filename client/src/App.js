@@ -4,6 +4,7 @@ import CssBaseLine from '@material-ui/core/CssBaseline';
 import Navbar from './components/layouts/Navbar';
 import Home from './components/pages/Home';
 import Login from "./components/auth/Login";
+import AddBlog from "./components/pages/AddBlog";
 import Register from "./components/auth/Register";
 import Axios from "axios";
 import UserContext from './contexts/userContext';
@@ -19,7 +20,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-
     const checkLoggedIn = async () => {
       setIsLoading(true);
       try {
@@ -40,19 +40,18 @@ const App = () => {
             user: userRes.data,
           });
         }
-        
+
       }
       catch (err) {
         console.log(err);
       }
-      finally{
+      finally {
         setIsLoading(false)
       }
 
     };
 
     checkLoggedIn();
-
   }, []);
 
   return (
@@ -62,11 +61,11 @@ const App = () => {
         <Navbar />
         {isLoading ? <CircularProgress />
           :
-
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/blogs/create" component={AddBlog} />
           </Switch>
         }
       </UserContext.Provider>
