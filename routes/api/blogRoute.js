@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBlog, showBlogs } = require('../../controllers/blogController');
+const { createBlog, showBlogs, singleBlog } = require('../../controllers/blogController');
 
 const router = express.Router();
 
@@ -9,5 +9,7 @@ const router = express.Router();
 router.post('/create', createBlog);
 
 router.get('/', showBlogs);
+
+router.get('/:id', singleBlog);
 
 module.exports = router;

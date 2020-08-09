@@ -9,6 +9,7 @@ import Register from "./components/auth/Register";
 import Axios from "axios";
 import UserContext from './contexts/userContext';
 import { CircularProgress } from '@material-ui/core';
+import BlogDetails from "./components/pages/BlogDetails";
 
 
 const App = () => {
@@ -66,6 +67,7 @@ const App = () => {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/blogs/create" component={AddBlog} />
+            <Route exact path="/blogs/:id" render={(props) => <BlogDetails {...props} />} />
           </Switch>
         }
       </UserContext.Provider>

@@ -24,7 +24,7 @@ const createBlog = async (req, res) => {
 
 const showBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().sort([['date', 1]]);
+    const blogs = await Blog.find().sort([['createdAt', -1]]);
 
     res.send(blogs);
   } catch (err) {
@@ -32,7 +32,18 @@ const showBlogs = async (req, res) => {
   }
 };
 
+const singleBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+
+    res.send(blog)
+  } catch (err) {
+    res.status(400).json({ msg: err });
+  }
+}
+
 module.exports = {
   createBlog,
   showBlogs,
+  singleBlog
 };

@@ -3,7 +3,20 @@ import { Box, TextField, Button } from "@material-ui/core";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import userContext from "../../contexts/userContext";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "1rem",
+    padding: "1rem",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  textfield: {
+    margin: "1rem auto",
+  },
+  submitBtn: {},
+}));
 const AddBlog = () => {
   const [blog, setBlog] = useState({
     postedBy: "",
@@ -13,6 +26,7 @@ const AddBlog = () => {
 
   const history = useHistory();
   const { userData } = useContext(userContext);
+  const classes = useStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,8 +49,9 @@ const AddBlog = () => {
       console.log(err);
     }
   };
+
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <Box component="form" onSubmit={handleSubmit} className={classes.root}>
       <TextField
         required
         label="Title"
@@ -45,8 +60,8 @@ const AddBlog = () => {
         value={blog.title}
         fullWidth
         onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+        className={classes.textfield}
       />
-
       <TextField
         required
         multiline
@@ -57,9 +72,10 @@ const AddBlog = () => {
         type="text"
         value={blog.body}
         onChange={(e) => setBlog({ ...blog, body: e.target.value })}
+        className={classes.textfield}
       />
-
-      <Button type="submit" variant="outlined">
+      <br /> <br />
+      <Button type="submit" variant="outlined" className={classes.submitBtn}>
         Add Blog
       </Button>
     </Box>
