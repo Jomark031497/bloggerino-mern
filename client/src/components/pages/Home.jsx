@@ -35,10 +35,6 @@ const Home = () => {
 
     getBlogs();
 
-    return function cleanup() {
-      abortController.abort();
-    };
-
     // eslint-disable-next-line
   }, [userData]);
 

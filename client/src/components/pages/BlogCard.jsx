@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#fff",
     color: "#000",
     borderTop: "5px solid black",
+    borderBottom: "5px solid black",
   },
   blogTitle: {
     fontWeight: "bold",
@@ -24,6 +25,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 const BlogCard = ({ blog }) => {
   const classes = useStyles();
+  const [body, setBody] = useState("");
+
+  useEffect(() => {
+    const blogBody = blog.body;
+
+    let modBody =
+      blogBody.length > 150 ? blog.body.substr(0, 150).concat("...") : blogBody;
+
+    setBody(modBody);
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -32,12 +45,12 @@ const BlogCard = ({ blog }) => {
             {blog.title}
           </Typography>
         </Link>
-        <Typography variant="subtitle1">By: {blog.postedBy}</Typography>
+        <Typography variant="subtitle1">by: {blog.postedBy}</Typography>
         <Typography variant="subtitle2">
           Posted: {moment(blog.date).fromNow()}
         </Typography>
         <Divider style={{ margin: "1rem auto" }} />
-        <Typography variant="body1">{blog.body}</Typography>
+        <Typography variant="body1">{body}</Typography>
       </CardContent>
       <CardActions>
         <Button onClick={() => console.log("am clicked")}>Like</Button>
