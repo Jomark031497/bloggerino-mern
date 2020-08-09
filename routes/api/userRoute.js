@@ -30,4 +30,15 @@ router.get("/", auth, async (req, res) => {
 
 });
 
+router.get("/user-list", auth, async (req, res) => {
+    try {
+        const users = await User.find().select('username _id');
+        res.json(users)
+
+    }
+    catch (err) {
+        res.status(400).json({ msg: err });
+    }
+})
+
 module.exports = router;

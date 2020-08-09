@@ -47,7 +47,7 @@ const BlogCard = ({ blog }) => {
         </Link>
         <Typography variant="subtitle1">by: {blog.postedBy}</Typography>
         <Typography variant="subtitle2">
-          Posted: {moment(blog.date).fromNow()}
+          Posted: {moment(blog.createdAt).fromNow()}
         </Typography>
         <Divider style={{ margin: "1rem auto" }} />
         <Typography variant="body1">{body}</Typography>

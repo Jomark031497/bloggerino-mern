@@ -38,13 +38,11 @@ const AddBlog = () => {
 
     try {
       let token = localStorage.getItem("auth-token");
-      const tokenRes = await Axios.post("/api/users/isTokenValid", null, {
+
+      await Axios.post("/api/blogs/create", newBlog, {
         headers: { "x-auth-token": token },
       });
-      if (tokenRes) {
-        await Axios.post("/api/blogs/create", newBlog);
-        history.push("/");
-      }
+      history.push("/");
     } catch (err) {
       console.log(err);
     }

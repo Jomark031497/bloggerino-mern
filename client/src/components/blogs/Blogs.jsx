@@ -1,9 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+//material-ui
 import { Grid, Box, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import BlogCard from "./BlogCard";
-import { useHistory } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
+//components
+import BlogCard from "./BlogCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Blogs = ({ blogs }) => {
-  console.log(blogs);
   const classes = useStyles();
   const history = useHistory();
 

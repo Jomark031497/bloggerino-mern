@@ -1,9 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import userContext from "../../contexts/userContext";
 import Axios from "axios";
-import Blogs from "./Blogs";
+//Material-ui
+import { Box, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+//components
+import Blogs from "../blogs/Blogs";
 
 const useStyles = makeStyles((theme) => ({
   root: {

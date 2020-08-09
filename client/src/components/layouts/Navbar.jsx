@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     background: "#444c59",
     height: "3rem",
+    zIndex: "1",
   },
 }));
 

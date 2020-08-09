@@ -1,8 +1,16 @@
-import React, { useContext } from "react";
-import { Button, Box } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+import {
+  Button,
+  Box,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { makeStyles } from "@material-ui/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -14,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const AuthOptions = () => {
   const classes = useStyles();
   const history = useHistory();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const { userData, setUserData } = useContext(UserContext);
 
@@ -24,15 +33,53 @@ const AuthOptions = () => {
     });
 
     localStorage.setItem("auth-token", undefined);
+    setAnchorEl(null);
     history.push("/");
+  };
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
     <Box component="div" className={classes.root}>
       {userData.user ? (
-        <Button onClick={handleLogout} className={classes.buttons}>
-          LogOut
-        </Button>
+        <>
+          <IconButton className={classes.buttons} onClick={handleClick}>
+            <Avatar>
+              <AccountCircleIcon />
+            </Avatar>
+          </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem
+              onClick={() => {
+                history.push("/");
+                setAnchorEl(null);
+              }}
+            >
+              Home
+            </MenuItem>
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                history.push("/users");
+                setAnchorEl(null);
+              }}
+            >
+              Find Friends
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </>
       ) : (
         <>
           <Button

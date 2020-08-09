@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import CssBaseLine from '@material-ui/core/CssBaseline';
-import Navbar from './components/layouts/Navbar';
-import Home from './components/pages/Home';
-import Login from "./components/auth/Login";
-import AddBlog from "./components/pages/AddBlog";
-import Register from "./components/auth/Register";
-import Axios from "axios";
 import UserContext from './contexts/userContext';
+import Axios from "axios";
+//Material-ui
+import CssBaseLine from '@material-ui/core/CssBaseline';
 import { CircularProgress } from '@material-ui/core';
-import BlogDetails from "./components/pages/BlogDetails";
 
+//components
+import Users from "./components/pages/Users"
+import BlogDetails from "./components/blogs/BlogDetails";
+import Home from './components/pages/Home';
+import AddBlog from "./components/blogs/AddBlog";
+import Navbar from './components/layouts/Navbar';
+import Footer from "./components/layouts/Footer";
+import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
 
 const App = () => {
 
@@ -68,8 +72,10 @@ const App = () => {
             <Route path="/register" component={Register} />
             <Route path="/blogs/create" component={AddBlog} />
             <Route exact path="/blogs/:id" render={(props) => <BlogDetails {...props} />} />
+            <Route path="/users/" component={Users} />
           </Switch>
         }
+        <Footer />
       </UserContext.Provider>
     </Router>
   )
