@@ -1,10 +1,15 @@
 import React from "react";
+import { Box, Grid } from "@material-ui/core";
 
 const Footer = () => {
   return (
-    <div style={{ margin: "2rem"}}>
-      ___________________________
-    </div>
+    <Box component="div" style={{ margin: "2rem"}}>
+      <Grid container>
+        <Grid item xs={12}>
+
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

@@ -42,13 +42,13 @@ const singleBlog = async (req, res) => {
   }
 }
 
-const updateBlog = async (req, res) => {
+const addComment = async (req, res) => {
 
   try {
-    const addComment = await Blog.findByIdAndUpdate({ _id: req.params.id }, { $push: { comments: req.body.comment } }, { new: true })
+    const commentRes = await Blog.findByIdAndUpdate({ _id: req.params.id }, { $push: { comments: req.body.comment } }, { new: true })
 
 
-    res.send(addComment)
+    res.send(commentRes)
   }
   catch (err) {
     res.status(400).json({ msg: err });
@@ -59,5 +59,5 @@ module.exports = {
   createBlog,
   showBlogs,
   singleBlog,
-  updateBlog
+  addComment
 };

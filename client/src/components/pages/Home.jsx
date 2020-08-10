@@ -28,7 +28,11 @@ const Home = () => {
 
     const getBlogs = async () => {
       try {
-        const res = await Axios.get("/api/blogs", { signal: signal });
+        let token = localStorage.getItem("auth-token");
+        const res = await Axios.get("/api/blogs", {
+          signal: signal,
+          headers: { "x-auth-token": token },
+        });
         setBlogs(res.data);
       } catch (err) {
         console.log(`errormoto: ${err}`);

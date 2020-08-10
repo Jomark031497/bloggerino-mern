@@ -42,7 +42,10 @@ const BlogDetails = (props) => {
 
   useEffect(() => {
     const getBlog = async () => {
-      const res = await Axios.get(`/api/blogs/${id}`);
+      let token = localStorage.getItem("auth-token");
+      const res = await Axios.get(`/api/blogs/${id}`, {
+        headers: { "x-auth-token": token },
+      });
       setBlog(res.data);
     };
 
@@ -55,16 +58,14 @@ const BlogDetails = (props) => {
     const username = userData.user.username;
     try {
       await Axios.put(`/api/blogs/${id}`, {
-        comment: {
-          user: username,
-          comment: comment,
-        },
+        comment: { user: username, comment: comment },
       });
+
       console.log("comment added");
     } catch (err) {
       console.log(err);
     }
-    
+
     window.location.reload();
   };
 

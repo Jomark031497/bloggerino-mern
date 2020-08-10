@@ -1,17 +1,26 @@
 const express = require('express');
-const { createBlog, showBlogs, singleBlog, updateBlog } = require('../../controllers/blogController');
+const { createBlog, showBlogs, singleBlog, addComment } = require('../../controllers/blogController');
 const auth = require("../../middlewares/verifyToken");
 const router = express.Router();
 
+// METHOD: POST
+// DESC: CREATE A NEW BLOG
+// ACCESS: PRIVATE
+router.post('/create',auth, createBlog);
+
 // METHOD: GET
 // DESC: GET ALL THE BLOGS
-// AUTH: TRUE
-router.post('/create', createBlog);
+// ACCESS: PRIVATE
+router.get('/', auth, showBlogs);
 
-router.get('/', showBlogs);
+// METHOD: GET
+// DESC: GET A BLOG
+// ACCESS: PRIVATE
+router.get('/:id', auth, singleBlog);
 
-router.get('/:id', singleBlog);
-
-router.put("/:id", updateBlog);
+// METHOD: POST
+// DESC: ADD A COMMENT
+// ACCESS: PRIVATE
+router.put("/:id",auth, addComment);
 
 module.exports = router;

@@ -15,7 +15,6 @@ const registerUser = async (req, res) => {
     const userExists = await User.findOne({ username });
     if (userExists) res.status(400).json({ msg: 'Username already exists' });
 
-
     // Hash password to bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -83,6 +82,29 @@ const checkTokenValidity = async (req, res) => {
   }
 };
 
+const authenticateUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    res.json({
+      username: user.username,
+      id: user._id,
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
+
+const getUsersList = async (req, res) => {
+  try {
+    const users = await User.find().select('username _id');
+    res.json(users)
+
+  }
+  catch (err) {
+    res.status(400).json({ msg: err });
+  }
+}
 
 
 
@@ -90,5 +112,6 @@ module.exports = {
   registerUser,
   loginUser,
   checkTokenValidity,
-
+  authenticateUser,
+  getUsersList
 };

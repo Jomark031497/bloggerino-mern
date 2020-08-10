@@ -1,44 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, checkTokenValidity } = require('../../controllers/userController');
+const { registerUser, loginUser, checkTokenValidity, authenticateUser, getUsersList } = require('../../controllers/userController');
 const auth = require('../../middlewares/verifyToken');
 
 const User = require('../../models/UserModel');
 
-// METHOD: POST
-// DESC: Register a user
-// auth: false
+// METHOD:  POST
+// DESC:    REGISTER A NEW USER
+// ACCESS:  PUBLIC
 router.post('/register', registerUser);
 
-// METHOD: POST
-// DESC: Login a user
-// auth: true
+// METHOD:  POST
+// DESC:    LOGIN A USER
+// ACCESS:  PUBLIC
 router.post('/login', loginUser);
 
 
-// METHOD: POSTs
-// DESC: Check token of user
-// auth: true
+// METHOD:  POST
+// DESC:    CHECK TOKEN OF USER
+// ACCESS:  PUBLIC
 router.post('/isTokenValid', checkTokenValidity);
 
-router.get("/", auth, async (req, res) => {
-    const user = await User.findById(req.user);
-    res.json({
-        username: user.username,
-        id: user._id,
-    })
+// METHOD:  GET
+// DESC:    AUTHENTICATE LOGGED IN USER
+// ACCESS:  PRIVATE
+router.get("/", auth, authenticateUser);
 
-});
-
-router.get("/user-list", auth, async (req, res) => {
-    try {
-        const users = await User.find().select('username _id');
-        res.json(users)
-
-    }
-    catch (err) {
-        res.status(400).json({ msg: err });
-    }
-})
+// METHOD:  GET
+// DESC:    GET USER LISTS
+// ACCESS:  PRIVATE
+router.get("/user-list", auth, getUsersList)
 
 module.exports = router;
