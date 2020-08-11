@@ -37,8 +37,7 @@ const AddBlog = () => {
     };
 
     try {
-      let token = localStorage.getItem("auth-token");
-
+      const token = userData.token;
       await Axios.post("/api/blogs/create", newBlog, {
         headers: { "x-auth-token": token },
       });

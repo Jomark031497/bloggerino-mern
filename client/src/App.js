@@ -5,7 +5,6 @@ import Axios from "axios";
 //Material-ui
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import { CircularProgress } from '@material-ui/core';
-
 //components
 import Users from "./components/pages/Users"
 import BlogDetails from "./components/blogs/BlogDetails";
@@ -15,6 +14,7 @@ import Navbar from './components/layouts/Navbar';
 import Footer from "./components/layouts/Footer";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Profile from "./components/pages/Profile";
 
 const App = () => {
 
@@ -25,16 +25,17 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const source = Axios.CancelToken.source();
     const checkLoggedIn = async () => {
       setIsLoading(true);
       try {
         let token = localStorage.getItem("auth-token");
-        if (token === null) {
+        if (token === null || token === undefined) {
           localStorage.setItem("auth-token", "");
           token = "";
         }
         const tokenRes = await Axios.post(
-          "/api/users/isTokenValid", null, { headers: { "x-auth-token": token } }
+          "/api/users/isTokenValid", null, { headers: { "x-auth-token": token }, cancelToken: source.token, }
         );
         if (tokenRes.data) {
           const userRes = await Axios.get("/api/users/", {
@@ -45,7 +46,6 @@ const App = () => {
             user: userRes.data,
           });
         }
-
       }
       catch (err) {
         console.log(err);
@@ -57,6 +57,9 @@ const App = () => {
     };
 
     checkLoggedIn();
+    return () => {
+      source.cancel()
+    }
   }, []);
 
   return (
@@ -68,11 +71,12 @@ const App = () => {
           :
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/blogs/create" component={AddBlog} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/blogs/create" component={AddBlog} />
             <Route exact path="/blogs/:id" render={(props) => <BlogDetails {...props} />} />
-            <Route path="/users/" component={Users} />
+            <Route exact path="/users/" component={Users} />
+            <Route exact path="/users/profile/:id" render={(props) => <Profile {...props} />} />
           </Switch>
         }
         <Footer />

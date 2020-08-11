@@ -33,6 +33,7 @@ const Register = () => {
     email: "",
     password: "",
     passwordCheck: "",
+    profilePic: "",
   });
 
   const clearFields = () => {
@@ -41,6 +42,7 @@ const Register = () => {
       email: "",
       password: "",
       passwordCheck: "",
+      profilePic: "",
     });
   };
 
@@ -93,7 +95,6 @@ const Register = () => {
         )}
         <TextField
           required
-          name="username"
           label="Username"
           type="text"
           variant="outlined"
@@ -106,7 +107,6 @@ const Register = () => {
 
         <TextField
           required
-          name="email"
           label="Email"
           type="email"
           variant="outlined"
@@ -119,7 +119,6 @@ const Register = () => {
 
         <TextField
           required
-          name="password"
           label="Password"
           type="password"
           variant="outlined"
@@ -132,7 +131,6 @@ const Register = () => {
 
         <TextField
           required
-          name="passwordCheck"
           label="Retype Password"
           type="password"
           variant="outlined"

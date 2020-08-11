@@ -10,12 +10,15 @@ import {
 import { useHistory } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { makeStyles } from "@material-ui/styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
     color: "#fff",
     height: "100%",
+  },
+  avatar: {
+    backgroundColor: "black",
+    margin: "auto",
   },
 }));
 
@@ -49,8 +52,8 @@ const AuthOptions = () => {
       {userData.user ? (
         <>
           <IconButton className={classes.buttons} onClick={handleClick}>
-            <Avatar>
-              <AccountCircleIcon />
+            <Avatar className={classes.avatar}>
+              {userData.user.username.substr(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>
           <Menu

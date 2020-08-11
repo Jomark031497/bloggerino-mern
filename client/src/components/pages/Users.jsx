@@ -7,8 +7,8 @@ import {
   CardContent,
   Typography,
   CardActionArea,
+  Button,
 } from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState("");
   const classes = useStyles();
   useEffect(() => {
     const getUsers = async () => {
       try {
         let token = localStorage.getItem("auth-token");
-        const userRes = await Axios.get("/api/users/user-list", {
+        const userRes = await Axios.get("/api/users/list", {
           headers: { "x-auth-token": token },
         });
 
@@ -43,7 +43,12 @@ const Users = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container className={classes.gridContainer} spacing={4}>
+      <Grid
+        container
+        className={classes.gridContainer}
+        spacing={4}
+        justify="center"
+      >
         {users &&
           users.map((user) => (
             <Grid item xs={4} key={user._id}>
@@ -51,12 +56,13 @@ const Users = () => {
                 <CardActionArea>
                   <CardContent className={classes.cardArea}>
                     <Avatar className={classes.avatar}>
-                      <AccountCircleIcon />
+                      {user.username.substr(0, 1).toUpperCase()}
                     </Avatar>
 
                     <Typography variant="body2">{user.username}</Typography>
                   </CardContent>
                 </CardActionArea>
+                <Button size="small">Add Friend</Button>
               </Card>
             </Grid>
           ))}

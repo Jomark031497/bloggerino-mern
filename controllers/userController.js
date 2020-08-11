@@ -4,18 +4,15 @@ const User = require('../models/UserModel');
 const { registerValidation, loginValidation } = require('../validations/userValidation');
 
 const registerUser = async (req, res) => {
+  const { username, email, password, imageUrl } = req.body;
   try {
-    const { username, email, password } = req.body;
 
-    // Validate data
     const { error } = registerValidation(req.body);
     if (error) return res.status(400).json({ msg: error.details[0].message });
 
-    // Check if user already exists in database
     const userExists = await User.findOne({ username });
-    if (userExists) res.status(400).json({ msg: 'Username already exists' });
+    if (userExists) return res.status(400).json({ msg: 'Username already exists' });
 
-    // Hash password to bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -23,6 +20,7 @@ const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      imageUrl
     });
 
     await newUser.save();
@@ -42,12 +40,13 @@ const loginUser = async (req, res) => {
 
     // Check if the user exists in the database
     const user = await User.findOne({ username });
-    if (!user) res.status(400).json({ msg: 'Username not found' });
+    if (!user) return res.status(400).json({ msg: 'Username not found' });
 
     // Check password
     const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) res.status(400).json({ msg: "Invalid Password" });
+    if (!validPassword) return res.status(400).json({ msg: "Invalid Password" });
 
+    //Add token
     const token = jwt.sign({
       // eslint-disable-next-line
       id: user._id,
@@ -59,6 +58,7 @@ const loginUser = async (req, res) => {
         // eslint-disable-next-line
         id: user._id,
         username: user.username,
+        imageUrl: user.imageUrl
       },
     });
   } catch (err) {
@@ -82,6 +82,16 @@ const checkTokenValidity = async (req, res) => {
   }
 };
 
+const userList = async (req, res) => {
+  try {
+    const users = await User.find().select("username _id");
+    res.json(users);
+  } catch (err) {
+    res.status(400).json({ msg: err });
+  }
+}
+
+
 const authenticateUser = async (req, res) => {
   try {
     const user = await User.findById(req.user);
@@ -95,13 +105,19 @@ const authenticateUser = async (req, res) => {
 
 }
 
-const getUsersList = async (req, res) => {
+const getUserInfo = async (req, res, next) => {
   try {
-    const users = await User.find().select('username _id');
-    res.json(users)
+    const user = await User.findById(req.params.id).populate('Blog')
+    res.json({
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      friends: user.friends,
+      createdAt: user.createdAt
+    })
 
-  }
-  catch (err) {
+    next();
+  } catch (err) {
     res.status(400).json({ msg: err });
   }
 }
@@ -113,5 +129,6 @@ module.exports = {
   loginUser,
   checkTokenValidity,
   authenticateUser,
-  getUsersList
+  getUserInfo,
+  userList
 };

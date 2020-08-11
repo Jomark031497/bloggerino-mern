@@ -14,7 +14,7 @@ const blogSchema = new Schema({
     type: String,
     required: true,
   },
-  comments: [{ user: String, comment: String }]
+  comments: [{ user: String, comment: String, date: { type: Date, default: Date.now() } }]
 }, {
   timestamps: true
 });

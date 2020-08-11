@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   AppBar,
@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/styles";
 import HomeIcon from "@material-ui/icons/Home";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useHistory } from "react-router-dom";
+import userContext from "../../contexts/userContext";
 
 import AuthOptions from "../auth/AuthOptions";
 
@@ -44,6 +45,7 @@ const Navbar = () => {
   const classes = useStyles();
   const [navVal, setNavVal] = useState(0);
   const history = useHistory();
+  const { userData } = useContext(userContext);
 
   return (
     <Box component="div">
@@ -72,7 +74,11 @@ const Navbar = () => {
           icon={<HomeIcon />}
           onClick={() => history.push("/")}
         />
-        <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} />
+        <BottomNavigationAction
+          label="Profile"
+          icon={<AccountCircleIcon />}
+          onClick={() => history.push(`/users/profile/${userData.user.id}`)}
+        />
       </BottomNavigation>
     </Box>
   );

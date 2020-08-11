@@ -29,6 +29,7 @@ const Home = () => {
     const getBlogs = async () => {
       try {
         let token = localStorage.getItem("auth-token");
+        
         const res = await Axios.get("/api/blogs", {
           signal: signal,
           headers: { "x-auth-token": token },

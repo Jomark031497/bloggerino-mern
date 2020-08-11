@@ -1,33 +1,30 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import moment from "moment";
+//material-ui
 import { makeStyles } from "@material-ui/styles";
-import { Box, Typography, TextField, Button } from "@material-ui/core";
-import userContext from "../../contexts/userContext";
+import { Box, Typography, Divider } from "@material-ui/core";
+//components
+import AddComment from "./AddComment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: "1rem",
   },
   blogContent: {
-    margin: "0.5rem",
     padding: "1rem",
     background: "rgb(250,250,250)",
     borderRadius: "1rem",
     border: "1px solid black",
   },
+  comments: {
+    background: "#ddd",
+  },
   comment: {
     background: "rgb(250,250,250)",
-    margin: "1rem",
-  },
-  formContainer: {
-    margin: "1rem",
-  },
-  commentBox: {
-    width: "70%",
-  },
-  submitBtn: {
-    width: "20%",
-    margin: "auto 0.5rem",
+    padding: "1rem",
+    margin: "0.5rem auto",
+    borderRadius: "0.5rem",
   },
 }));
 
@@ -36,13 +33,12 @@ const BlogDetails = (props) => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
-  const [comment, setComment] = useState("");
-  const { userData } = useContext(userContext);
   const [blog, setBlog] = useState("");
 
   useEffect(() => {
     const getBlog = async () => {
-      let token = localStorage.getItem("auth-token");
+      const token = localStorage.getItem("auth-token");
+
       const res = await Axios.get(`/api/blogs/${id}`, {
         headers: { "x-auth-token": token },
       });
@@ -52,22 +48,6 @@ const BlogDetails = (props) => {
     getBlog();
     //eslint-disable-next-line
   }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const username = userData.user.username;
-    try {
-      await Axios.put(`/api/blogs/${id}`, {
-        comment: { user: username, comment: comment },
-      });
-
-      console.log("comment added");
-    } catch (err) {
-      console.log(err);
-    }
-
-    window.location.reload();
-  };
 
   return (
     <Box component="div" className={classes.root}>
@@ -80,29 +60,7 @@ const BlogDetails = (props) => {
             <Typography variant="body1">{blog.body}</Typography>
           </Box>
 
-          <Box
-            component="form"
-            className={classes.formContainer}
-            onSubmit={handleSubmit}
-          >
-            <TextField
-              value={comment}
-              variant="outlined"
-              label="Write a comment..."
-              onChange={(e) => setComment(e.target.value)}
-              className={classes.commentBox}
-              multiline
-              rows={3}
-            />
-
-            <Button
-              type="submit"
-              variant="outlined"
-              className={classes.submitBtn}
-            >
-              Submit
-            </Button>
-          </Box>
+          <AddComment id={id} />
 
           <Box component="div" className={classes.comments}>
             {blog.comments.length ? (
@@ -113,8 +71,11 @@ const BlogDetails = (props) => {
                     className={classes.comment}
                     key={comments._id}
                   >
-                    <Typography variant="body2">~{comments.user}</Typography>
+                    <Typography variant="body2">
+                      ~{comments.user} - {moment(comments.date).fromNow()}
+                    </Typography>
                     <Typography variant="body1">{comments.comment}</Typography>
+                    <Divider />
                   </Box>
                 ))}
               </>

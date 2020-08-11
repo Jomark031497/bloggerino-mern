@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, checkTokenValidity, authenticateUser, getUsersList } = require('../../controllers/userController');
-const auth = require('../../middlewares/verifyToken');
+const {
+    registerUser,
+    loginUser,
+    checkTokenValidity,
+    authenticateUser,
+    getUserInfo,
+    userList
+} = require('../../controllers/userController');
 
-const User = require('../../models/UserModel');
+const auth = require('../../middlewares/verifyToken');
 
 // METHOD:  POST
 // DESC:    REGISTER A NEW USER
@@ -16,6 +22,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 
 
+
 // METHOD:  POST
 // DESC:    CHECK TOKEN OF USER
 // ACCESS:  PUBLIC
@@ -26,9 +33,18 @@ router.post('/isTokenValid', checkTokenValidity);
 // ACCESS:  PRIVATE
 router.get("/", auth, authenticateUser);
 
+
 // METHOD:  GET
-// DESC:    GET USER LISTS
+// DESC:    GET ALL USER
 // ACCESS:  PRIVATE
-router.get("/user-list", auth, getUsersList)
+router.get("/list", auth, userList);
+
+
+
+// METHOD:  GET
+// DESC:    GET SINGLE USER INFO
+// ACCESS:  PRIVATE
+router.get("/:id", auth, getUserInfo);
+
 
 module.exports = router;
