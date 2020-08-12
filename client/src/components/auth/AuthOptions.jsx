@@ -70,7 +70,14 @@ const AuthOptions = () => {
             >
               Home
             </MenuItem>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                history.push(`/users/profile/${userData.user.id}`);
+                setAnchorEl(null);
+              }}
+            >
+              Profile
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 history.push("/users");
