@@ -53,9 +53,15 @@ const BlogCard = ({ blog }) => {
         <Typography variant="body1">{body}</Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => console.log("am clicked")}>Like</Button>
-        <Button onClick={() => console.log("am clicked")}>Share</Button>
-        <Button onClick={() => console.log("am clicked")}>Report</Button>
+        <Button disabled onClick={() => console.log("am clicked")}>
+          Like
+        </Button>
+        <Button disabled onClick={() => console.log("am clicked")}>
+          Share
+        </Button>
+        <Button disabled onClick={() => console.log("am clicked")}>
+          Report
+        </Button>
       </CardActions>
     </Card>
   );
