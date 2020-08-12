@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import moment from "moment";
+
 //material-ui
 import { makeStyles } from "@material-ui/styles";
 import { Box, Typography, Divider } from "@material-ui/core";
 //components
 import AddComment from "./AddComment";
+import BlogComments from "./BlogComments";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "0.5rem auto",
     borderRadius: "0.5rem",
   },
+  divider: {
+    margin: "1rem 0",
+  },
 }));
 
 const BlogDetails = (props) => {
@@ -36,16 +40,25 @@ const BlogDetails = (props) => {
   const [blog, setBlog] = useState("");
 
   useEffect(() => {
+    const source = Axios.CancelToken.source();
     const getBlog = async () => {
-      const token = localStorage.getItem("auth-token");
+      try {
+        const token = localStorage.getItem("auth-token");
 
-      const res = await Axios.get(`/api/blogs/${id}`, {
-        headers: { "x-auth-token": token },
-      });
-      setBlog(res.data);
+        const res = await Axios.get(`/api/blogs/${id}`, {
+          cancelToken: source.token,
+          headers: { "x-auth-token": token },
+        });
+        setBlog(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     getBlog();
+    return () => {
+      source.cancel();
+    };
     //eslint-disable-next-line
   }, []);
 
@@ -56,13 +69,14 @@ const BlogDetails = (props) => {
           <Box component="div" className={classes.blogContent}>
             <Typography variant="h5">{blog.title}</Typography>
             <Typography variant="subtitle1">by: {blog.postedBy}</Typography>
-            <br />
+            <Divider className={classes.divider} />
             <Typography variant="body1">{blog.body}</Typography>
           </Box>
 
           <AddComment id={id} />
 
-          <Box component="div" className={classes.comments}>
+          <BlogComments comments={blog.comments} />
+          {/* <Box component="div" className={classes.comments}>
             {blog.comments.length ? (
               <>
                 {blog.comments.map((comments) => (
@@ -82,7 +96,7 @@ const BlogDetails = (props) => {
             ) : (
               <h4>No Comments...</h4>
             )}
-          </Box>
+          </Box> */}
         </>
       )}
     </Box>

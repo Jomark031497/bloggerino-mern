@@ -6,14 +6,17 @@ import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    margin: "1rem",
+    margin: "1rem 0",
+    display: "flex",
+    justifyContent: "center",
   },
   commentBox: {
-    width: "80%",
+    width: "70%",
   },
   submitBtn: {
     width: "15%",
     marginLeft: "0.5rem",
+    height: "10%",
   },
 }));
 
@@ -61,7 +64,7 @@ const AddComment = ({ id }) => {
 
       <Button
         type="submit"
-        variant="outlined"
+        variant="contained"
         color="primary"
         className={classes.submitBtn}
       >
