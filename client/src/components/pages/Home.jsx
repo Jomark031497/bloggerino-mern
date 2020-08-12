@@ -23,15 +23,15 @@ const Home = () => {
   const [blogs, setBlogs] = useState("");
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
+    // const abortController = new AbortController();
+    // const signal = abortController.signal;
+    const source = Axios.CancelToken.source();
     const getBlogs = async () => {
       try {
         let token = localStorage.getItem("auth-token");
-        
+
         const res = await Axios.get("/api/blogs", {
-          signal: signal,
+          cancelToken: source.token,
           headers: { "x-auth-token": token },
         });
         setBlogs(res.data);
@@ -41,7 +41,9 @@ const Home = () => {
     };
 
     getBlogs();
-
+    return () => {
+      source.cancel();
+    };
     // eslint-disable-next-line
   }, [userData]);
 
