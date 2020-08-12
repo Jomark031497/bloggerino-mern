@@ -7,7 +7,6 @@ import {
   CardContent,
   Typography,
   CardActionArea,
-  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
@@ -25,10 +24,12 @@ const Users = () => {
   const [users, setUsers] = useState("");
   const classes = useStyles();
   useEffect(() => {
+    const source = Axios.CancelToken.source();
     const getUsers = async () => {
       try {
         let token = localStorage.getItem("auth-token");
         const userRes = await Axios.get("/api/users/list", {
+          cancelToken: source.token,
           headers: { "x-auth-token": token },
         });
 
@@ -39,6 +40,9 @@ const Users = () => {
     };
 
     getUsers();
+    return () => {
+      source.cancel();
+    };
   }, []);
 
   return (
@@ -62,7 +66,6 @@ const Users = () => {
                     <Typography variant="body2">{user.username}</Typography>
                   </CardContent>
                 </CardActionArea>
-                <Button size="small">Add Friend</Button>
               </Card>
             </Grid>
           ))}
