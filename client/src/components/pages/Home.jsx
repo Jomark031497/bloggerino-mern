@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     textAlign: "center",
   },
+  greeting:{
+    margin: "1rem"
+  }
 }));
 
 const Home = () => {
@@ -23,8 +26,6 @@ const Home = () => {
   const [blogs, setBlogs] = useState("");
 
   useEffect(() => {
-    // const abortController = new AbortController();
-    // const signal = abortController.signal;
     const source = Axios.CancelToken.source();
     const getBlogs = async () => {
       try {
@@ -50,7 +51,12 @@ const Home = () => {
   return (
     <>
       {userData.user ? (
-        <div>{blogs && <Blogs blogs={blogs} />}</div>
+        <>
+          <Typography variant="h6" className={classes.greeting}>
+            Hello, {userData.user.username}
+          </Typography>
+          {blogs && <Blogs blogs={blogs} />}
+        </>
       ) : (
         <Box component="div" className={classes.root}>
           <Typography variant="h3">Bloggerino</Typography>

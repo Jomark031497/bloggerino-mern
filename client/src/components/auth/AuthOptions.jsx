@@ -55,6 +55,7 @@ const AuthOptions = () => {
               {userData.user.username.substr(0, 1).toUpperCase()}
             </Avatar>
           </IconButton>
+        
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
