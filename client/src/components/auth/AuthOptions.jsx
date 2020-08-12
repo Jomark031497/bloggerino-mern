@@ -26,7 +26,6 @@ const AuthOptions = () => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
-
   const { userData, setUserData } = useContext(UserContext);
 
   const handleLogout = (e) => {
@@ -78,7 +77,7 @@ const AuthOptions = () => {
                 setAnchorEl(null);
               }}
             >
-              Find Friends
+              User List
             </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
