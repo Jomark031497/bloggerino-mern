@@ -35,7 +35,7 @@ const BlogComments = ({ comments }) => {
           ))}
         </>
       ) : (
-        <h3>No Comments... yet</h3>
+        <h3>No Comments... yet  </h3>
       )}
     </Box>
   );

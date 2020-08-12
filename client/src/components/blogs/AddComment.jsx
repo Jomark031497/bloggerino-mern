@@ -33,7 +33,7 @@ const AddComment = ({ id }) => {
       const commentRes = await Axios.put(
         `/api/blogs/${id}`,
         {
-          comment: { user: username, comment: comment },
+          comment: { user: username, comment: comment, date: Date.now() },
         },
         { headers: { "x-auth-token": token } }
       );
